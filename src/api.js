@@ -9,16 +9,13 @@ const api = axios.create({
   },
 });
 
-// Auth endpoints
-export const login = (email, password) => api.post('/login', { email, password });
-export const register = (name, email, password) => api.post('/register', { name, email, password });
+// User authentication
+export const login = (email, password) => api.post('/users/login', { email, password });
+export const register = (name, email, password) => api.post('/users/register', { name, email, password });
 
 // Presentation endpoints
-export const getPresentations = (userId) => api.get(`/presentations?user_id=${userId}`);
-
-// Modified to NOT require password verification
+export const getPresentations = (userId) => api.get('/presentations', { params: { user_id: userId } });
 export const getPresentation = (id) => api.get(`/presentations/${id}`);
-
 export const createPresentation = (data) => api.post('/presentations', data);
 export const updatePresentation = (id, data) => api.put(`/presentations/${id}`, data);
 export const deletePresentation = (id) => api.delete(`/presentations/${id}`);
@@ -89,28 +86,8 @@ export const addClient = (presentationId, data) => api.post(`/presentations/${pr
 
 // Analytics endpoints
 export const getAnalytics = (presentationId, clientId) => {
-  let url = `/analytics/${presentationId}`;
-  if (clientId) {
-    url += `?client_id=${clientId}`;
-  }
-  console.log('📊 Fetching analytics from:', url);
-  return api.get(url);
-};
-
-// Update analytics endpoints to support more detailed data
-export const getAnalyticsEvents = (presentationId, clientId, startDate, endDate) => {
-  let url = `/analytics/${presentationId}/events`;
-  const params = [];
-  
-  if (clientId) params.push(`client_id=${clientId}`);
-  if (startDate) params.push(`start_date=${startDate}`);
-  if (endDate) params.push(`end_date=${endDate}`);
-  
-  if (params.length > 0) {
-    url += `?${params.join('&')}`;
-  }
-  
-  return api.get(url);
+  const params = clientId ? { client_id: clientId } : {};
+  return api.get(`/analytics/${presentationId}`, { params });
 };
 
 export const recordAnalyticsEvent = (data) => {
