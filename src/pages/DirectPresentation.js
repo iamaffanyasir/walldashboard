@@ -27,7 +27,7 @@ function DirectPresentation() {
   const [videoInteracted, setVideoInteracted] = useState(false);
   
   const videoRef = useRef(null);
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const API_URL = process.env.REACT_APP_API_URL || 'https://wallpresentation.theautochef.com/api';
 
   // Generate client view URL for QR code
   const generateClientURL = () => {
@@ -484,7 +484,7 @@ function DirectPresentation() {
           
           // Use sendBeacon for better reliability during page unload
           navigator.sendBeacon(
-            `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/analytics/events/beacon`, 
+            `${process.env.REACT_APP_API_URL || 'https://wallpresentation.theautochef.com/api'}/analytics/events/beacon`, 
             JSON.stringify(analyticsData)
           );
         }
