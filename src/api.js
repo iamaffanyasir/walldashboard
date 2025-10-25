@@ -10,8 +10,13 @@ const api = axios.create({
 });
 
 // User authentication
-export const login = (email, password) => api.post('/users/login', { email, password });
-export const register = (name, email, password) => api.post('/users/register', { name, email, password });
+export async function login(email, password) {
+  return axios.post(`${API_URL}/users/login`, { email, password });
+}
+
+export async function register(name, email, password) {
+  return axios.post(`${API_URL}/users/register`, { name, email, password });
+}
 
 // Presentation endpoints
 export const getPresentations = (userId) => api.get('/presentations', { params: { user_id: userId } });
